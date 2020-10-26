@@ -1,0 +1,11 @@
+
+.wrap {
+  background: grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+input, button {
+  margin-right: 10px;
+}
