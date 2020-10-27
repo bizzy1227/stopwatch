@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import {fromEvent, Observable, Subscriber} from 'rxjs';
 import { map } from 'rxjs/operators';
+import { EventEmitter } from 'protractor';
 
 @Component({
   selector: 'app-root',
@@ -9,23 +10,22 @@ import { map } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   public value = '00:00:00';
-  public date = new Date();
-  public myInterval: any;
+  public ms = 0;
+  public myInterval: NodeJS.Timeout;
   public timeStamp = 0;
   public obsTime: Observable<string>;
   public obsClick: any;
   public timerActive = false;
 
-  constructor(private el: ElementRef) { }
+  constructor() { }
 
   ngOnInit() {
-    this.date.setHours(0, 0, 0, 0);
     this.obsTime = new Observable(subscriber => {
       this.myInterval = setInterval(() => {
-        this.date.setSeconds(this.date.getSeconds() + 1);
-        let h = this.date.getHours();
-        let m = this.date.getMinutes();
-        let s = this.date.getSeconds();
+        this.ms = this.ms + 1000;
+        let s = Math.floor((this.ms / 1000) % 60);
+        let m = Math.floor((this.ms / 1000 / 60) % 60);
+        let h = Math.floor((this.ms  / 1000 / 3600 ) % 99);
         h = this.checkTime(h);
         m = this.checkTime(m);
         s = this.checkTime(s);
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
           default:
             break;
         }
-    });
+      });
   }
 
   checkTime(i) {
@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
   stop() {
     this.timerActive = false;
     clearInterval(this.myInterval);
-    this.date.setHours(0, 0, 0, 0);
+    this.ms = 0;
     this.value = '00:00:00';
   }
 
