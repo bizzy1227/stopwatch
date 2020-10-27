@@ -80,12 +80,10 @@ export class AppComponent implements OnInit {
 
   wait(timeStamp: number) {
     if (timeStamp - this.timeStamp > 300) {
-      console.log(timeStamp - this.timeStamp);
       this.timeStamp = timeStamp;
       return;
     }
     else {
-      console.log(timeStamp - this.timeStamp);
       this.timeStamp = timeStamp;
       this.timerActive = false;
       clearInterval(this.myInterval);
